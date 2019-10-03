@@ -10,6 +10,12 @@ namespace BurningSimulator
     {
         static void Main(string[] args)
         {
+            Grid grid = new Grid(21, 21);
+
+            grid.Burn();
+
+            Console.ReadLine();
+            Console.ReadKey();
         }
     }
 }
