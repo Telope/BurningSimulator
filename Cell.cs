@@ -19,10 +19,22 @@ namespace BurningSimulator
             y = yPosition;
         }
 
+        public void Burn()
+        {
+
+        }
+
         public void Ignite()
         {
 
         }
+
+        public void Die()
+        {
+
+        }
+
+
 
     }
 }

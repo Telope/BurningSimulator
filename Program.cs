@@ -16,6 +16,8 @@ namespace BurningSimulator
 
             Console.ReadLine();
             Console.ReadKey();
+
+            
         }
     }
 }
