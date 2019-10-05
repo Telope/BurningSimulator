@@ -12,12 +12,9 @@ namespace BurningSimulator
         {
             Grid grid = new Grid(21, 21);
 
-            grid.Burn();
+            grid.Burn();          
 
-            Console.ReadLine();
             Console.ReadKey();
-
-            
         }
     }
 }

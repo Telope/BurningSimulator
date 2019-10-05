@@ -8,9 +8,9 @@ namespace BurningSimulator
 {
     class Cell
     {
-        int x;
-        int y;
-        //Status status = new Status;
+        public int x;
+        public int y;
+        public char status;
 
         //Constructor
         public Cell(int xPosition, int yPosition)

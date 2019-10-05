@@ -8,7 +8,7 @@ namespace BurningSimulator
 {
     class Grid
     {
-        char[,] cells;
+         Cell[,] cells; 
         int numColumns;
         int numRows;
         private string output;
@@ -30,7 +30,15 @@ namespace BurningSimulator
             numColumns = columns;
             numRows = rows;
 
-            cells = new char[numRows, numColumns];
+            cells = new Cell[numColumns, numRows];
+
+            for (int i = 0; i < numColumns; i++)
+            {
+                for (int j = 0; j < numRows; j++)
+                {
+                    cells[i, j] = new Cell(i, j);
+                }
+            }
 
             this.Reset();
         }
@@ -38,25 +46,14 @@ namespace BurningSimulator
         // Format and print the grid
         public void Print()
         {
-            int i = 0;
-
-            foreach (char cell in cells)
+            for (int j = 0; j < numRows; j++)
             {
-                output += cell;
-                i++;
-
-                // Add a new line after each row
-                if (i == numColumns)
+                for (int i = 0; i < numColumns; i++)
                 {
-                    output += "\n";
-                    i = 0;
+                    output += cells[i, j].status  + " ";
                 }
 
-                // Add a blank space after every character
-                else
-                {
-                    output += " ";
-                }
+                output += "\n";
             }
 
             Console.WriteLine(output);
@@ -64,21 +61,20 @@ namespace BurningSimulator
 
         // Reset the grid so that all cells apart from the outside edge are '&'
         public void Reset()
-        {
-            for (int i = 0; i < numRows; i++)
+            // 
+        {   
+            for (int j = 0; j < numRows; j++)
             {
-                for (int j = 0; j < numColumns; j++)
+                for (int i = 0; i < numColumns; i++)
                 {
-                    if (i == 0 || j == 0 || i == numRows - 1 || j == numColumns - 1)
+                    if (i == 0 || j == 0 || i == numColumns - 1 || j == numRows - 1)
                     {
-                        cells[i, j] = ' ';
+                        cells[i, j].status = ' ';
                     }
                     else
                     {
-                        cells[i, j] = '&';
+                        cells[i, j].status = '&';
                     }
-                    
-
                 }
             }
         }
