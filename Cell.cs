@@ -19,19 +19,22 @@ namespace BurningSimulator
             y = yPosition;
         }
 
-        public void Burn()
+        public void AttemptIgnition()
         {
+            Random random = new Random();
+            int cellIgnites = random.Next(0, 1);
 
+            this.Ignite();
         }
 
         public void Ignite()
         {
-
+            this.status = 'x';
         }
 
         public void Die()
         {
-
+            this.status = ' ';
         }
 
 

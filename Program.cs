@@ -8,11 +8,14 @@ namespace BurningSimulator
 {
     class Program
     {
+        
+
         static void Main(string[] args)
         {
             Grid grid = new Grid(21, 21);
+            grid.Burn();
 
-            grid.Burn();          
+            
 
             Console.ReadKey();
         }
