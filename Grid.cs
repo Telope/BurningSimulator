@@ -8,19 +8,27 @@ namespace BurningSimulator
 {
     class Grid
     {
-        Cell[,] cells; 
+        Random rng = new Random();
+        Cell[,] cells;
+
         int numColumns;
         int numRows;
+
+
+
         private string output;
 
         public void Burn()
         {
+            List<Cell> burningCells = new List<Cell>();
             List<Cell> cellsToBurn = new List<Cell>();
+
             CentreCell().Ignite();
+            burningCells.Add(CentreCell());
 
             Print();
 
-            while (true)
+            while (burningCells.Any())
             {
                 foreach (Cell cell in cells)
                 {
@@ -33,29 +41,34 @@ namespace BurningSimulator
                                 cellsToBurn.Add(neighbour);
                             }
                         }
+
+                        cell.status = ' ';
                     }
                 }
+                int test = burningCells.Count;
+                burningCells.Clear();
 
                 foreach (Cell cell in cellsToBurn)
                 {
-                    cell.AttemptIgnition();
+                    if (cell.AttemptIgnition(rng))
+                    {
+                        burningCells.Add(cell);
+                    }
                 }
+
+                cellsToBurn.Clear();
 
                 Console.ReadKey();
                 Console.Clear();
                 Print();
+                Console.WriteLine(test);
             }
-
-
-
-            
-            
         }
 
         private Cell CentreCell()
         {
-            int xMiddle = (int)Math.Ceiling(((numColumns -1) / 2.0));
-            int yMiddle = (int)Math.Ceiling(((numRows- 1) / 2.0));
+            int xMiddle = (int)Math.Ceiling(((numColumns - 1) / 2.0));
+            int yMiddle = (int)Math.Ceiling(((numRows - 1) / 2.0));
 
             return cells[xMiddle, yMiddle];
         }
@@ -88,7 +101,7 @@ namespace BurningSimulator
             {
                 for (int i = 0; i < numColumns; i++)
                 {
-                    output += cells[i, j].status  + " ";
+                    output += cells[i, j].status + " ";
                 }
 
                 output += "\n";
@@ -99,17 +112,17 @@ namespace BurningSimulator
 
         // Reset the grid so that all cells apart from the outside edge are '&'
         public void Reset()
-        {   
+        {
             for (int j = 0; j < numRows; j++)
             {
                 for (int i = 0; i < numColumns; i++)
                 {
-                    // Create the Absorbing Boundary Condition of blank cells
+                    /*// Create the Absorbing Boundary Condition of blank cells
                     if (i == 0 || j == 0 || i == numColumns - 1 || j == numRows - 1)
                     {
                         cells[i, j].status = ' ';
                     }
-                    else
+                    else*/
                     {
                         cells[i, j].status = '&';
                     }
@@ -119,16 +132,23 @@ namespace BurningSimulator
 
         // Use grid to return the 4 cells surrounding this cell
         // TODO: Check that neighbouring cells exist to avoid Boundary errors
-        public Cell[] FindNeighboursOf(Cell cell)
+        public List<Cell> FindNeighboursOf(Cell cell)
         {
-            Cell[] neighbours = new Cell[4];
+            List<Cell> neighbours = new List<Cell>();
             int x = cell.x;
             int y = cell.y;
 
-            neighbours[0] = cells[x - 1, y];
-            neighbours[1] = cells[x, y - 1];
-            neighbours[2] = cells[x + 1, y];
-            neighbours[3] = cells[x, y + 1];
+            try { neighbours.Add(cells[x - 1, y]); }
+            catch (IndexOutOfRangeException) { }
+
+            try { neighbours.Add(cells[x, y - 1]); }
+            catch (IndexOutOfRangeException) { }
+
+            try { neighbours.Add(cells[x + 1, y]); }
+            catch (IndexOutOfRangeException) { }
+
+            try { neighbours.Add(cells[x, y + 1]); }
+            catch (IndexOutOfRangeException) { }
 
             return neighbours;
         }

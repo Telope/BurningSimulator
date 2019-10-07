@@ -8,9 +8,13 @@ namespace BurningSimulator
 {
     class Cell
     {
+        // Location of cell on grid
         public int x;
         public int y;
+        // Alive '&'; Burning 'x'; Dead ' '.
         public char status;
+        // How long the cell burns for before dying
+         
 
         //Constructor
         public Cell(int xPosition, int yPosition)
@@ -19,12 +23,20 @@ namespace BurningSimulator
             y = yPosition;
         }
 
-        public void AttemptIgnition()
+        public bool AttemptIgnition(Random rng)
         {
-            Random random = new Random();
-            int cellIgnites = random.Next(0, 1);
+            // Randomly 0 or 1
+            int cellIgnites =  rng.Next(0, 2);
 
-            this.Ignite();
+            if (cellIgnites > 0)
+            {
+                Ignite();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void Ignite()
