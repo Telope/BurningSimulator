@@ -11,10 +11,19 @@ namespace BurningSimulator
         // Location of cell on grid
         public int x;
         public int y;
+        private char _status;
         // Alive '&'; Burning 'x'; Dead ' '.
-        public char status;
+        public char status
+        {
+            get { return _status; }
+            set {
+                //if (value != '&'  || value != 'x' || value != ' ') {
+                //    throw new Exception();
+                //}
+                _status = value; }
+        }
         // How long the cell burns for before dying
-         
+        
 
         //Constructor
         public Cell(int xPosition, int yPosition)
@@ -41,12 +50,15 @@ namespace BurningSimulator
 
         public void Ignite()
         {
-            this.status = 'x';
+            status = 'x';
         }
 
         public void Die()
         {
-            this.status = ' ';
+            status = ' ';
+
+            
+
         }
 
 

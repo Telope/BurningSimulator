@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ASCIIConverter.cs" />
     <Compile Include="Cell.cs" />
+    <Compile Include="Control.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

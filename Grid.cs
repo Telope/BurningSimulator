@@ -9,20 +9,19 @@ namespace BurningSimulator
     class Grid
     {
         Random rng = new Random();
+
         Cell[,] cells;
+
+        //<Cell> livingCells = new List<Cell>();
+        List<Cell> burningCells = new List<Cell>();
+        List<Cell> cellsToBurn = new List<Cell>();
 
         int numColumns;
         int numRows;
 
-
-
-        private string output;
-
         public void Burn()
         {
-            List<Cell> burningCells = new List<Cell>();
-            List<Cell> cellsToBurn = new List<Cell>();
-
+            Reset();
             CentreCell().Ignite();
             burningCells.Add(CentreCell());
 
@@ -30,22 +29,11 @@ namespace BurningSimulator
 
             while (burningCells.Any())
             {
-                foreach (Cell cell in cells)
+                foreach (Cell cell in burningCells)
                 {
-                    if (cell.status == 'x')
-                    {
-                        foreach (Cell neighbour in FindNeighboursOf(cell))
-                        {
-                            if (neighbour.status == '&')
-                            {
-                                cellsToBurn.Add(neighbour);
-                            }
-                        }
-
-                        cell.status = ' ';
-                    }
+                    SpreadFire(cell);
                 }
-                int test = burningCells.Count;
+
                 burningCells.Clear();
 
                 foreach (Cell cell in cellsToBurn)
@@ -59,10 +47,24 @@ namespace BurningSimulator
                 cellsToBurn.Clear();
 
                 Console.ReadKey();
-                Console.Clear();
+
                 Print();
-                Console.WriteLine(test);
+
             }
+
+            Console.WriteLine("The fire burned out! Press Enter to reset...");
+        }
+
+        private void SpreadFire(Cell cell)
+        {
+            foreach (Cell neighbour in FindNeighboursOf(cell))
+            {
+                if (neighbour.status == '&')
+                {
+                    cellsToBurn.Add(neighbour);
+                }
+            }
+            cell.Die();
         }
 
         private Cell CentreCell()
@@ -93,9 +95,10 @@ namespace BurningSimulator
         }
 
         // Format and print the grid
-        public void Print()
+        private void Print()
         {
-            output = string.Empty;
+            string output = string.Empty;
+            Console.Clear();
 
             for (int j = 0; j < numRows; j++)
             {
@@ -117,12 +120,12 @@ namespace BurningSimulator
             {
                 for (int i = 0; i < numColumns; i++)
                 {
-                    /*// Create the Absorbing Boundary Condition of blank cells
+                    // Create the Absorbing Boundary Condition of blank cells
                     if (i == 0 || j == 0 || i == numColumns - 1 || j == numRows - 1)
                     {
                         cells[i, j].status = ' ';
                     }
-                    else*/
+                    else
                     {
                         cells[i, j].status = '&';
                     }

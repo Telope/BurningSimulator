@@ -11,11 +11,29 @@ namespace BurningSimulator
         static void Main(string[] args)
         {
             Grid grid = new Grid(21, 21);
-            grid.Burn();
+            Control control = new Control();
 
-            Console.WriteLine("The fire burned out! Press Enter to continue...");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+            Console.WriteLine(
+               "Welcome to the fire simulation! \n\n" +
+               "Enter:      Start the simulation \n" +
+               "Q:          Quit");
 
+            while (true)
+            {
+                switch (Console.ReadKey(true).Key)
+                {
+                    case ConsoleKey.Enter:
+                        grid.Burn();
+                        break;
+
+                    case ConsoleKey.Q:
+                        control.Quit();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
     }
 }
