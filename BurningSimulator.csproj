@@ -47,9 +47,9 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="Grid.cs" />
+    <Compile Include="_Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Status.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

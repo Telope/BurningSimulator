@@ -10,11 +10,12 @@ namespace BurningSimulator
     {
         Random rng = new Random();
 
-        Cell[,] cells;
+        public Cell[,] cells;
 
         //<Cell> livingCells = new List<Cell>();
         List<Cell> burningCells = new List<Cell>();
         List<Cell> cellsToBurn = new List<Cell>();
+        List<Cell> cellsToDie = new List<Cell>();
 
         int numColumns;
         int numRows;
@@ -31,10 +32,23 @@ namespace BurningSimulator
             {
                 foreach (Cell cell in burningCells)
                 {
+                    cell.timeBurned++;
                     SpreadFire(cell);
+
+                    if (cell.timeBurned >= Cell.burnTime)
+                    {
+                        cellsToDie.Add(cell);
+                    }
+
                 }
 
-                burningCells.Clear();
+                foreach (Cell cell in cellsToDie)
+                {
+                    burningCells.Remove(cell);
+                    cell.Die();
+                }
+
+                cellsToDie.Clear();
 
                 foreach (Cell cell in cellsToBurn)
                 {
@@ -51,20 +65,17 @@ namespace BurningSimulator
                 Print();
 
             }
-
-            Console.WriteLine("The fire burned out! Press Enter to reset...");
         }
 
         private void SpreadFire(Cell cell)
         {
-            foreach (Cell neighbour in FindNeighboursOf(cell))
+            foreach (Cell neighbour in cell.FindNeighbours())
             {
                 if (neighbour.status == '&')
                 {
                     cellsToBurn.Add(neighbour);
                 }
             }
-            cell.Die();
         }
 
         private Cell CentreCell()
@@ -87,7 +98,7 @@ namespace BurningSimulator
             {
                 for (int j = 0; j < numRows; j++)
                 {
-                    cells[i, j] = new Cell(i, j);
+                    cells[i, j] = new Cell(i, j, this);
                 }
             }
 
@@ -133,27 +144,30 @@ namespace BurningSimulator
             }
         }
 
-        // Use grid to return the 4 cells surrounding this cell
-        // TODO: Check that neighbouring cells exist to avoid Boundary errors
-        public List<Cell> FindNeighboursOf(Cell cell)
+
+
+
+        // Calculate the number of 'Islands' of trees there are.
+        public int NumberOfIslands(Grid grid)
         {
-            List<Cell> neighbours = new List<Cell>();
-            int x = cell.x;
-            int y = cell.y;
+            int numIslands = 0;
 
-            try { neighbours.Add(cells[x - 1, y]); }
-            catch (IndexOutOfRangeException) { }
+            foreach (Cell cell in grid.cells) if (cell.status == '&')
+            {
+                numIslands++;
+                WipeNeighbours(cell);
+            }
+            return numIslands;
+        }
 
-            try { neighbours.Add(cells[x, y - 1]); }
-            catch (IndexOutOfRangeException) { }
-
-            try { neighbours.Add(cells[x + 1, y]); }
-            catch (IndexOutOfRangeException) { }
-
-            try { neighbours.Add(cells[x, y + 1]); }
-            catch (IndexOutOfRangeException) { }
-
-            return neighbours;
+        // Only used in NumberOfIslands()
+        private void WipeNeighbours(Cell cell)
+        {
+            cell.status = ' ';
+            foreach (Cell neighbour in cell.FindNeighbours()) if (neighbour.status == '&')
+                {
+                    WipeNeighbours(neighbour);
+                }
         }
     }
 }
