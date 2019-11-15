@@ -46,7 +46,7 @@ namespace BurningSimulator
 
         private static void BackToOptions()
         {
-            Controller.PrintOptions();
+            Control.DisplayOptions();
         }
     }
 }

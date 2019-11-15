@@ -6,65 +6,43 @@ using System.Threading.Tasks;
 
 namespace BurningSimulator
 {
-    class Controller
+    class Control
     {
-        Grid grid = new Grid(21, 21);
-        public Controller()
+        static Grid grid = new Grid(21, 21);
+
+        public static void Start()
         {
-            MainMenu();
-
-            while (true)
-            {
-                switch (Console.ReadKey(true).Key)
-                {
-                    case ConsoleKey.Enter:
-                        Start();
-                        break;
-
-                    case ConsoleKey.O:
-                        Options();
-                        break;
-
-                    case ConsoleKey.Q:
-                        Quit();
-                        break;
-
-                    case ConsoleKey.M:
-                        MainMenu();
-                        break;
-
-
-                    default:
-                        break;
-                }
-            }
-        }
-
-        public void Start()
-        {
-            grid.Burn();
+            Control.grid.Burn();
             SimulationOver();
         }
 
-        private void SimulationOver()
+        private static void SimulationOver()
         {
             Console.WriteLine("The fire burned out!");
             Console.WriteLine("There are " + grid.NumberOfIslands(grid) + " clumps of trees remaining");
             
             // Return to main menu
-            Console.WriteLine("Press M to return to main menu...");
-            while (Console.ReadKey(true).Key != ConsoleKey.M) { }
-            MainMenu();
+            Console.WriteLine("Enter:   Restart Simulation\nM: Main Menu...");
+
+            switch (Console.ReadKey(true).Key)
+            {
+                case ConsoleKey.Enter:
+                    Control.Start();    // Will this create a stack?
+                    break;
+
+                case ConsoleKey.M:
+                    return;             // I want the switch to wait for a valid input rather than 
+            }
         }
 
-        public void Quit()
+        public static void Quit()
         {
             Environment.Exit(0);
         }
 
-        public void Options()
+        public static void Options()
         {
-            PrintOptions();
+            DisplayOptions();
 
             // Change ASCII characters for alive / burnt cells etc.
 
@@ -80,7 +58,7 @@ namespace BurningSimulator
                         _Options.FireBurnTime();
                         break;
 
-                    case ConsoleKey.M:
+                    case ConsoleKey.Enter:
                         return;
 
                     default:
@@ -89,15 +67,14 @@ namespace BurningSimulator
             }
         }
 
-        public static void PrintOptions()
+        public static void DisplayOptions()
         {
             Console.Clear();
-            Console.WriteLine("Options: Press M to return to main menu...");
+            Console.WriteLine("Options: Press Enter to return to main menu...");
             Console.WriteLine("F: Change how long the fires burn for");
         }
 
-
-        public void MainMenu()
+        public static void DisplayMainMenu()
         {
             string mainmenu =  "Welcome to the fire simulation! \n\n" +
                                "Enter:  Start the simulation \n" +

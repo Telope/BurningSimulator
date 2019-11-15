@@ -10,7 +10,29 @@ namespace BurningSimulator
     {
         static void Main(string[] args)
         {
-            Control.Controller();
+            while (true)
+            {
+                Console.Clear();
+                Control.DisplayMainMenu();
+
+                switch (Console.ReadKey(true).Key)
+                {
+                    case ConsoleKey.Enter:
+                        Control.Start();
+                        break;
+
+                    case ConsoleKey.O:
+                        Control.Options();
+                        break;
+
+                    case ConsoleKey.Q:
+                        Control.Quit();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
     }
 }
