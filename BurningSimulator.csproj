@@ -43,11 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ASCIIConverter.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="Grid.cs" />
-    <Compile Include="_Options.cs" />
+    <Compile Include="Option.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

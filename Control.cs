@@ -42,7 +42,6 @@ namespace BurningSimulator
 
         public static void Options()
         {
-            DisplayOptions();
 
             // Change ASCII characters for alive / burnt cells etc.
 
@@ -52,10 +51,17 @@ namespace BurningSimulator
 
             while (true)
             {
+                Console.Clear();
+                DisplayOptions();
+
                 switch (Console.ReadKey(true).Key)
                 {
-                    case ConsoleKey.F:
-                        _Options.FireBurnTime();
+                    case ConsoleKey.T:
+                        Option.FireBurnTime();
+                        break;
+
+                    case ConsoleKey.C:
+                        Option.CellBurnChance();
                         break;
 
                     case ConsoleKey.Enter:
@@ -70,8 +76,9 @@ namespace BurningSimulator
         public static void DisplayOptions()
         {
             Console.Clear();
-            Console.WriteLine("Options: Press Enter to return to main menu...");
-            Console.WriteLine("F: Change how long the fires burn for");
+            Console.WriteLine("Options: Press Enter to return to main menu...\n");
+            Console.WriteLine("C:\tChange how likely it is for trees to ignite");
+            Console.WriteLine("T:\tChange how long the fires burn for");
         }
 
         public static void DisplayMainMenu()

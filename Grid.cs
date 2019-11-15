@@ -6,56 +6,52 @@ using System.Threading.Tasks;
 
 namespace BurningSimulator
 {
+    // The grid contains an array of cells
+
     class Grid
     {
-        Random rng = new Random();
+        private Random rng = new Random();
 
-        public Cell[,] cells;
+        private Cell[,] cells;
 
-        //<Cell> livingCells = new List<Cell>();
-        List<Cell> burningCells = new List<Cell>();
-        List<Cell> cellsToBurn = new List<Cell>();
-        List<Cell> cellsToDie = new List<Cell>();
+        private List<Cell> cellsToBurn = new List<Cell>();
+        private List<Cell> burningCells = new List<Cell>();
+        private List<Cell> cellsToDie = new List<Cell>();
 
-        int numColumns;
-        int numRows;
+        private int numColumns;
+        private int numRows;
 
         public void Burn()
         {
             Reset();
             CentreCell().Ignite();
-            burningCells.Add(CentreCell());
 
             Print();
 
-            while (burningCells.Any())
+            while (BurningCells.Any())
             {
-                foreach (Cell cell in burningCells)
+                foreach (Cell cell in BurningCells)
                 {
-                    cell.timeBurned++;
+                    cell.TimeBurned++;
                     SpreadFire(cell);
 
-                    if (cell.timeBurned >= Cell.burnTime)
+                    if (cell.TimeBurned >= Cell.BurnTime)
                     {
                         cellsToDie.Add(cell);
                     }
 
                 }
 
-                foreach (Cell cell in cellsToDie)
+                foreach (Cell cell in CellsToDie)
                 {
-                    burningCells.Remove(cell);
                     cell.Die();
                 }
 
                 cellsToDie.Clear();
 
-                foreach (Cell cell in cellsToBurn)
+                foreach (Cell cell in CellsToBurn)
                 {
-                    if (cell.AttemptIgnition(rng))
-                    {
-                        burningCells.Add(cell);
-                    }
+                    cell.AttemptIgnition(rng);
                 }
 
                 cellsToBurn.Clear();
@@ -71,7 +67,7 @@ namespace BurningSimulator
         {
             foreach (Cell neighbour in cell.FindNeighbours())
             {
-                if (neighbour.status == '&')
+                if (neighbour.Status == '&')
                 {
                     cellsToBurn.Add(neighbour);
                 }
@@ -115,7 +111,7 @@ namespace BurningSimulator
             {
                 for (int i = 0; i < numColumns; i++)
                 {
-                    output += cells[i, j].status + " ";
+                    output += cells[i, j].Status + " ";
                 }
 
                 output += "\n";
@@ -134,11 +130,11 @@ namespace BurningSimulator
                     // Create the Absorbing Boundary Condition of blank cells
                     if (i == 0 || j == 0 || i == numColumns - 1 || j == numRows - 1)
                     {
-                        cells[i, j].status = ' ';
+                        cells[i, j].Status = ' ';
                     }
                     else
                     {
-                        cells[i, j].status = '&';
+                        cells[i, j].Status = '&';
                     }
                 }
             }
@@ -152,22 +148,51 @@ namespace BurningSimulator
         {
             int numIslands = 0;
 
-            foreach (Cell cell in grid.cells) if (cell.status == '&')
-            {
-                numIslands++;
-                WipeNeighbours(cell);
-            }
+            foreach (Cell cell in grid.cells) if (cell.Status == '&')
+                {
+                    numIslands++;
+                    WipeNeighbours(cell);
+                }
             return numIslands;
         }
 
         // Only used in NumberOfIslands()
         private void WipeNeighbours(Cell cell)
         {
-            cell.status = ' ';
-            foreach (Cell neighbour in cell.FindNeighbours()) if (neighbour.status == '&')
+            cell.Status = ' ';
+            foreach (Cell neighbour in cell.FindNeighbours()) if (neighbour.Status == '&')
                 {
                     WipeNeighbours(neighbour);
                 }
+        }
+
+        // Accessors
+
+        public Cell GetCell(int x, int y)
+        {
+            return cells[x, y];
+        }
+        public List<Cell> BurningCells
+        {
+            get { return burningCells; }
+        }
+        public void AddToBurningCells(Cell cell)
+        {
+            burningCells.Add(cell);
+        }
+        public void RemoveFromBurningCells(Cell cell)
+        {
+            burningCells.Remove(cell);
+        }
+
+        public List<Cell> CellsToBurn
+        {
+            get { return cellsToBurn; }
+        }
+
+        public List<Cell> CellsToDie
+        {
+            get { return cellsToDie; }
         }
     }
 }
