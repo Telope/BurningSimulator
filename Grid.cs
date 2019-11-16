@@ -30,6 +30,8 @@ namespace BurningSimulator
 
             while (BurningCells.Any())
             {
+                
+
                 foreach (Cell cell in BurningCells)
                 {
                     cell.TimeBurned++;

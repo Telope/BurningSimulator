@@ -10,16 +10,21 @@ namespace BurningSimulator
     {
         static void Main(string[] args)
         {
+            bool isInvalidKey = false;
+
             while (true)
             {
-                Console.Clear();
-                Control.DisplayMainMenu();
+                if (!isInvalidKey)
+                    Control.DisplayMainMenu();
+
+                isInvalidKey = false;
 
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.Enter:
                         Control.Start();
                         break;
+
 
                     case ConsoleKey.O:
                         Control.Options();
@@ -30,6 +35,7 @@ namespace BurningSimulator
                         break;
 
                     default:
+                        isInvalidKey = true;
                         break;
                 }
             }

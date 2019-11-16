@@ -27,7 +27,7 @@ namespace BurningSimulator
             switch (Console.ReadKey(true).Key)
             {
                 case ConsoleKey.Enter:
-                    Control.Start();    // Will this create a stack?
+                    Control.Start();    // Will this create a stack? Garbage collector? Stack overflow?
                     break;
 
                 case ConsoleKey.M:
@@ -47,13 +47,12 @@ namespace BurningSimulator
 
             // Change how long fires burn for
 
-
+            Console.Clear();
+            DisplayOptions();
 
             while (true)
             {
-                Console.Clear();
-                DisplayOptions();
-
+               
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.T:
@@ -65,6 +64,9 @@ namespace BurningSimulator
                         break;
 
                     case ConsoleKey.Enter:
+                        Console.Clear();
+                        DisplayOptions();
+
                         return;
 
                     default:
