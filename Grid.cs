@@ -21,16 +21,38 @@ namespace BurningSimulator
         private int numColumns;
         private int numRows;
 
+        // Burn Statistics
+
+        public int fireDuration {get; private set; } // How long the fire lasts
+        public int biggestFire { get; private set; } // The maximum number of simultaneous fires
+
+
         public void Burn()
         {
+            fireDuration = 0;
+            biggestFire = 0;
+
             Reset();
             CentreCell().Ignite();
+
+            // TEMP
+
+            //Console.WriteLine(rng);
+            //Console.ReadKey();
+            //Console.Clear();
+
+            // TEMP
 
             Print();
 
             while (BurningCells.Any())
             {
-                
+                // Deal with Burn Statistics
+                fireDuration++;
+                if (burningCells.Count > biggestFire)
+                {
+                    biggestFire = burningCells.Count;
+                }
 
                 foreach (Cell cell in BurningCells)
                 {
@@ -104,7 +126,7 @@ namespace BurningSimulator
         }
 
         // Format and print the grid
-        private void Print()
+        public void Print()
         {
             string output = string.Empty;
             Console.Clear();

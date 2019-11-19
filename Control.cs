@@ -10,29 +10,44 @@ namespace BurningSimulator
     {
         static Grid grid = new Grid(21, 21);
 
-        public static void Start()
+        public static void RunSimulation()
         {
-            Control.grid.Burn();
-            SimulationOver();
-        }
+            Simulation.Run();
 
-        private static void SimulationOver()
-        {
-            Console.WriteLine("The fire burned out!");
-            Console.WriteLine("There are " + grid.NumberOfIslands(grid) + " clumps of trees remaining");
-            
-            // Return to main menu
-            Console.WriteLine("Enter:   Restart Simulation\nM: Main Menu...");
-
-            switch (Console.ReadKey(true).Key)
+            // EndScreen Logic
+            bool isValidKey = true;
+            bool isRepeatSimulation = false;
+            while (true)
             {
-                case ConsoleKey.Enter:
-                    Control.Start();    // Will this create a stack? Garbage collector? Stack overflow?
-                    break;
+                if (isRepeatSimulation)
+                {
+                    Simulation.Run();
+                    isRepeatSimulation = false;
+                }
 
-                case ConsoleKey.M:
-                    return;             // I want the switch to wait for a valid input rather than 
+                if (isValidKey)
+                {
+                    Simulation.DisplayEndScreen();
+                    isValidKey = true;
+                }
+                isValidKey = true;
+
+                switch (Console.ReadKey(true).Key)
+                {
+
+                    case ConsoleKey.Enter:
+                        isRepeatSimulation = true;
+                        break;
+
+                    case ConsoleKey.M:
+                        return;
+
+                    default:
+                        isValidKey = false;
+                        break;
+                }
             }
+
         }
 
         public static void Quit()
@@ -47,12 +62,18 @@ namespace BurningSimulator
 
             // Change how long fires burn for
 
+            bool isValidKey = true;
+
             Console.Clear();
             DisplayOptions();
 
             while (true)
             {
-               
+                if (isValidKey)
+                    DisplayOptions();
+
+                isValidKey = true;
+
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.T:
@@ -63,13 +84,11 @@ namespace BurningSimulator
                         Option.CellBurnChance();
                         break;
 
-                    case ConsoleKey.Enter:
-                        Console.Clear();
-                        DisplayOptions();
-
+                    case ConsoleKey.M:
                         return;
 
                     default:
+                        isValidKey = false;
                         break;
                 }
             }
@@ -78,20 +97,17 @@ namespace BurningSimulator
         public static void DisplayOptions()
         {
             Console.Clear();
-            Console.WriteLine("Options: Press Enter to return to main menu...\n");
+            Console.WriteLine("Options:\n");
             Console.WriteLine("C:\tChange how likely it is for trees to ignite");
             Console.WriteLine("T:\tChange how long the fires burn for");
+            Console.WriteLine("\nM:\tBack to Main Menu");
         }
 
-        public static void DisplayMainMenu()
-        {
-            string mainmenu =  "Welcome to the fire simulation! \n\n" +
-                               "Enter:  Start the simulation \n" +
-                               "O:      Options \n" +
-                               "Q:      Quit";
+        // Accessor
 
-            Console.Clear();
-            Console.WriteLine(mainmenu);
+        public static Grid GetGrid()
+        {
+            return grid;
         }
     }
 }

@@ -10,21 +10,20 @@ namespace BurningSimulator
     {
         static void Main(string[] args)
         {
-            bool isInvalidKey = false;
-
+            // Main Menu Logic
+            bool isValidKey = true;
             while (true)
             {
-                if (!isInvalidKey)
-                    Control.DisplayMainMenu();
+                if (isValidKey)
+                    DisplayMainMenu();
 
-                isInvalidKey = false;
+                isValidKey = true;
 
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.Enter:
-                        Control.Start();
+                        Control.RunSimulation();
                         break;
-
 
                     case ConsoleKey.O:
                         Control.Options();
@@ -35,10 +34,21 @@ namespace BurningSimulator
                         break;
 
                     default:
-                        isInvalidKey = true;
+                        isValidKey = false;
                         break;
                 }
             }
+        }
+
+        public static void DisplayMainMenu()
+        {
+            string mainmenu = "Welcome to the fire simulation! \n\n" +
+                               "Enter:  Start the simulation \n" +
+                               "O:      Options \n" +
+                               "Q:      Quit";
+
+            Console.Clear();
+            Console.WriteLine(mainmenu);
         }
     }
 }

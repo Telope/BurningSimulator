@@ -77,5 +77,11 @@ namespace BurningSimulator
             Cell.BurnChance = newBurnChance;
 
         }
+
+        public static void ChangeChars()
+        {
+            Console.Clear();
+            Console.WriteLine("Currently, trees are represented by '");
+        }
     }
 }
