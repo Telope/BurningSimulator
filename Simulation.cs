@@ -26,10 +26,11 @@ namespace BurningSimulator
             Console.WriteLine("The fire burned out!");
             Console.WriteLine("The fire burned for " + grid.fireDuration + " ticks");
             Console.WriteLine("At its peak, " + grid.biggestFire + " trees were alight simultaneously.");
-            Console.WriteLine("There are " + grid.NumberOfIslands(grid) + " clumps of trees remaining");
+            Console.WriteLine("There are " + grid.NumberOfIslands(grid) + " clumps of trees remaining\n");
 
             // Return to main menu
-            Console.WriteLine("\nEnter:   Restart Simulation\nM: Main Menu...");
+            Console.WriteLine("Enter:\tRestart Simulation\n" +
+                "M:\tMain Menu...");
         }
     }
 }

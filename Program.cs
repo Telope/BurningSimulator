@@ -29,6 +29,10 @@ namespace BurningSimulator
                         Control.Options();
                         break;
 
+                    case ConsoleKey.H:
+                        Control.DisplayHelp();
+                        break;
+
                     case ConsoleKey.Q:
                         Control.Quit();
                         break;
@@ -45,6 +49,7 @@ namespace BurningSimulator
             string mainmenu = "Welcome to the fire simulation! \n\n" +
                                "Enter:  Start the simulation \n" +
                                "O:      Options \n" +
+                               "H:      Help\n" +
                                "Q:      Quit";
 
             Console.Clear();

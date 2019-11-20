@@ -18,8 +18,8 @@ namespace BurningSimulator
         private List<Cell> burningCells = new List<Cell>();
         private List<Cell> cellsToDie = new List<Cell>();
 
-        private int numColumns;
-        private int numRows;
+        public static int numColumns { get; set; } = 21;
+        public static int numRows { get; set; } = 21;
 
         // Burn Statistics
 
@@ -29,19 +29,23 @@ namespace BurningSimulator
 
         public void Burn()
         {
+            cells = new Cell[numColumns, numRows];
+
+            for (int i = 0; i < numColumns; i++)
+            {
+                for (int j = 0; j < numRows; j++)
+                {
+                    cells[i, j] = new Cell(i, j, this);
+                }
+            }
+
+            this.Reset();
+
             fireDuration = 0;
             biggestFire = 0;
 
             Reset();
             CentreCell().Ignite();
-
-            // TEMP
-
-            //Console.WriteLine(rng);
-            //Console.ReadKey();
-            //Console.Clear();
-
-            // TEMP
 
             Print();
 
@@ -49,7 +53,7 @@ namespace BurningSimulator
             {
                 // Deal with Burn Statistics
                 fireDuration++;
-                if (burningCells.Count > biggestFire)
+                if (biggestFire < burningCells.Count)
                 {
                     biggestFire = burningCells.Count;
                 }
@@ -111,18 +115,6 @@ namespace BurningSimulator
         {
             numColumns = columns;
             numRows = rows;
-
-            cells = new Cell[numColumns, numRows];
-
-            for (int i = 0; i < numColumns; i++)
-            {
-                for (int j = 0; j < numRows; j++)
-                {
-                    cells[i, j] = new Cell(i, j, this);
-                }
-            }
-
-            this.Reset();
         }
 
         // Format and print the grid
@@ -202,7 +194,11 @@ namespace BurningSimulator
         }
         public void AddToBurningCells(Cell cell)
         {
-            burningCells.Add(cell);
+            if (!burningCells.Contains(cell))
+            {
+                burningCells.Add(cell);
+            }
+
         }
         public void RemoveFromBurningCells(Cell cell)
         {
