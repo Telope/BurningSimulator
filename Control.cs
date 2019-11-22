@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace BurningSimulator
 {
+    // Methods in the Control class carry out the actions listed in the main menu
+        // (from the Program Class)
+
     class Control
     {
-        static Grid grid;
+        // The forest
+        private static Grid grid;
 
+        //Handles starting and repeating the simulation, returning  to main menu
         public static void RunSimulation()
         {
             grid = new Grid(Grid.numColumns, Grid.numRows);
@@ -17,7 +22,10 @@ namespace BurningSimulator
             Simulation.Run();
 
             // EndScreen Logic
+
+            // The user input is a valid menu option
             bool isValidKey = true;
+            // The user has chosen to rerun the simulation
             bool isRepeatSimulation = false;
             while (true)
             {
@@ -52,6 +60,7 @@ namespace BurningSimulator
 
         }
 
+        // Help screen: explanation / instructions / legend
         internal static void DisplayHelp()
         {
             Console.Clear();
@@ -70,22 +79,20 @@ namespace BurningSimulator
             Console.ReadKey();
         }
 
+        // Quit the program
         public static void Quit()
         {
             Environment.Exit(0);
         }
 
+        // Logic for the Options menu
         public static void Options()
         {
-
-            // Change ASCII characters for alive / burnt cells etc.
-
-            // Change how long fires burn for
-
-            bool isValidKey = true;
-
             Console.Clear();
             DisplayOptions();
+
+            // The user input is a valid menu option
+            bool isValidKey = true;
 
             while (true)
             {
@@ -118,6 +125,7 @@ namespace BurningSimulator
             }
         }
 
+        // Display the Options menu
         public static void DisplayOptions()
         {
             Console.Clear();
@@ -129,7 +137,6 @@ namespace BurningSimulator
         }
 
         // Accessor
-
         public static Grid GetGrid()
         {
             return grid;

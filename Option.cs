@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace BurningSimulator
 {
+    // Methods in the Option class carry out the actions listed in the options menu
+        // (from the Control Class)
+
     class Option
     {
+        // The forest
         static private Grid grid;
 
         //Constructor
@@ -16,9 +20,12 @@ namespace BurningSimulator
             grid = Control.GetGrid();
         }
 
+        // Change how long each tree can burn for before burning out
         public static void FireBurnTime()
         {
             string temp = string.Empty;
+
+            // Return value is the current value if no change is made.
             int newBurnTime = Cell.BurnTime;
 
             Console.Clear();
@@ -51,9 +58,12 @@ namespace BurningSimulator
 
         }
 
+        // Changes how likely each tree is to burn when next to a burning tree
         public static void CellBurnChance()
         {
             string temp = string.Empty;
+
+            // Updated burn chance is the same as the old one if no changes are made
             int newBurnChance = Cell.BurnChance;
 
             Console.Clear();
@@ -87,7 +97,7 @@ namespace BurningSimulator
         }
 
 
-        // &&&& NOT IMPLEMENTED!!!
+        // Change the dimensions of the grid (width and height)
         internal static void GridSize()
         {
             {
@@ -118,6 +128,8 @@ namespace BurningSimulator
 
         }
 
+        // Handles inputs in the GridSize option screen
+                // In the future, this method could be modified to handle all user input
         private static int ReadInput(int oldValue)
         {
             string temp = string.Empty;
@@ -132,15 +144,15 @@ namespace BurningSimulator
                 {
                     output = int.Parse(temp);
                     inputIsValid = true;
-                    if (output < 0 || output > 255)
+                    if (output < 0 || output > 100)
                     {
-                        Console.WriteLine("Error: Please enter an integer from 1 to 255 >>");
+                        Console.WriteLine("Error: Please enter an integer from 1 to 100 >>");
                         inputIsValid = false;
                     }
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("Error: Please enter an integer from 1 to 255 >>");
+                    Console.WriteLine("Error: Please enter an integer from 1 to 100 >>");
                 }
             }
 

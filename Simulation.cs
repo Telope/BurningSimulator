@@ -6,20 +6,27 @@ using System.Threading.Tasks;
 
 namespace BurningSimulator
 {
+    //  Methods in the Simulation class carry out the actions related to running the simulation 
+            //(from the RunSimulation() method in the Control Class)
     class Simulation
     {
+        // The forest
         static private Grid grid;
 
+        // Constructor
         static Simulation()
         {
             grid = Control.GetGrid();
         }
 
+        // Start the Simulation
         public static void Run()
         {
             grid.Burn();
         }
 
+        // Display the end screen
+            // (Logic for this menu is in Control.RunSimulation())
         public static void DisplayEndScreen()
         {
             grid.Print();

@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 
 namespace BurningSimulator
 {
+    // Program is the entry point of the program and contains the main menu
     class Program
     {
+        // Program entry point and logic for main menu
         static void Main(string[] args)
         {
-            // Main Menu Logic
+            // Main menu Logic
+
+            // The user input is a valid menu option
             bool isValidKey = true;
+
             while (true)
             {
                 if (isValidKey)
@@ -44,6 +49,7 @@ namespace BurningSimulator
             }
         }
 
+        // Display the main menu
         public static void DisplayMainMenu()
         {
             string mainmenu = "Welcome to the fire simulation! \n\n" +
