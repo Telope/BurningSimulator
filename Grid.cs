@@ -17,20 +17,30 @@ namespace BurningSimulator
 
         // List of cells which will attempt ignition this tick
         private List<Cell> cellsToBurn = new List<Cell>();
+
         // List of cells which are burning at the start of this tick
         private List<Cell> burningCells = new List<Cell>();
+
         // List of cells which will burn out at the end of this tick
         private List<Cell> cellsToDie = new List<Cell>();
 
         // Dimensions of the Forest (height and width)
-        public static int numColumns { get; set; } = 21;
-        public static int numRows { get; set; } = 21;
+        private static int numColumns = 21;
+        private static int numRows = 21;
 
         // Burn Statistics
         // How long the fire lasts
-        public int fireDuration {get; private set; }
+        private int fireDuration;
+
         // The maximum number of simultaneous fires
-        public int biggestFire { get; private set; } 
+        private int biggestFire;
+
+        // Constructor
+        public Grid(int columns, int rows)
+        {
+            numColumns = columns;
+            numRows = rows;
+        }
 
         // This method handles the logic for the simulation from start to finish
         // Detailed in-line comments outline the sections of this method
@@ -56,7 +66,7 @@ namespace BurningSimulator
             // Logic for burning the grid
 
             // As long as there are cells still burning...
-            while (BurningCells.Any())
+            while (burningCells.Any())
             {
                 // Update the burn statistics
                 fireDuration++;
@@ -66,13 +76,15 @@ namespace BurningSimulator
                 }
 
                 // Spread the fire to the neighbouring trees of each burning cell
-                foreach (Cell cell in BurningCells)
+                foreach (Cell cell in burningCells)
                 {
-                    cell.TimeBurned++;
+                    // cell.timeburned++;
+                    cell.SetTimeBurned(cell.GetTimeBurned() + 1);
+
                     SpreadFire(cell);
 
                     // If the cell has burned for too long, it will burn out later in this tick
-                    if (cell.TimeBurned >= Cell.BurnTime)
+                    if (cell.GetTimeBurned() >= Cell.GetBurnTime())
                     {
                         cellsToDie.Add(cell);
                     }
@@ -80,14 +92,14 @@ namespace BurningSimulator
                 }
 
                 // Any burning cells that have burned for too long burn out
-                foreach (Cell cell in CellsToDie)
+                foreach (Cell cell in cellsToDie)
                 {
                     cell.Die();
                 }
                 cellsToDie.Clear();
 
                 // Each tree next to a burning cell has a chance to start burning
-                foreach (Cell cell in CellsToBurn)
+                foreach (Cell cell in cellsToBurn)
                 {
                     cell.AttemptIgnition(rng);
                 }
@@ -107,7 +119,7 @@ namespace BurningSimulator
         {
             foreach (Cell neighbour in cell.FindNeighbours())
             {
-                if (neighbour.Status == '&')
+                if (neighbour.GetStatus() == '&')
                 {
                     cellsToBurn.Add(neighbour);
                 }
@@ -123,13 +135,6 @@ namespace BurningSimulator
             return cells[xMiddle, yMiddle];
         }
 
-        // Constructor
-        public Grid(int columns, int rows)
-        {
-            numColumns = columns;
-            numRows = rows;
-        }
-
         // Format and print the grid
         public void Print()
         {
@@ -140,7 +145,7 @@ namespace BurningSimulator
             {
                 for (int i = 0; i < numColumns; i++)
                 {
-                    output += cells[i, j].Status + " ";
+                    output += cells[i, j].GetStatus() + " ";
                 }
 
                 output += "\n";
@@ -159,11 +164,11 @@ namespace BurningSimulator
                     // Create the Absorbing Boundary Condition of blank cells
                     if (i == 0 || j == 0 || i == numColumns - 1 || j == numRows - 1)
                     {
-                        cells[i, j].Status = ' ';
+                        cells[i, j].SetStatus(' ');
                     }
                     else
                     {
-                        cells[i, j].Status = '&';
+                        cells[i, j].SetStatus('&');
                     }
                 }
             }
@@ -174,58 +179,81 @@ namespace BurningSimulator
         {
             int numIslands = 0;
 
-            foreach (Cell cell in grid.cells) if (cell.Status == '&')
+            foreach (Cell cell in grid.cells) if (cell.GetStatus() == '&')
                 {
                     numIslands++;
-                    WipeNeighbours(cell);
+                    WipeNeighbours(cell);   
                 }
             return numIslands;
         }
 
         // Only used in the calculation of NumberOfIslands()
+            // Change all trees in the island to empty cells
         private void WipeNeighbours(Cell cell)
         {
-            cell.Status = ' ';
-            foreach (Cell neighbour in cell.FindNeighbours()) if (neighbour.Status == '&')
+            cell.SetStatus(' ');
+            foreach (Cell neighbour in cell.FindNeighbours()) if (neighbour.GetStatus() == '&')
                 {
                     WipeNeighbours(neighbour);
                 }
         }
 
-        // Accessors
+            // Accessors
+
         public Cell GetCell(int x, int y)
         {
             return cells[x, y];
         }
-        public List<Cell> BurningCells
+
+        public static int GetNumColumns()
         {
-            get { return burningCells; }
+            return numColumns;
         }
+
+        public static int GetNumRows()
+        {
+            return numRows;
+        }
+
+        public int GetFireDuration()
+        {
+            return fireDuration;
+        }
+
+        public int GetBiggestFire()
+        {
+            return biggestFire;
+        }
+
+            // Mutator
+
+        public static void SetNumColumns(int _numColumns)
+        {
+            numColumns = _numColumns;
+        }
+
+        public static void SetNumRows(int _numRows)
+        {
+            numRows = _numRows;
+        }
+
         public void AddToBurningCells(Cell cell)
         {
-            //Check for an cell in burning cells which has the same x and y value
-            // Lambda expression is from an external library#
+            //Check for a cell in burning cells which has the same x and y value as the input
+            // Lambda expression
             // Think of "=>" as meaning "where". (E.g. return burningCell WHERE burningCell.x == cell.x)
 
-            if (!burningCells.Any(burningCell => burningCell.x == cell.x && burningCell.y == cell.y ))
+            if (!burningCells.Any(burningCell => burningCell.GetX() == cell.GetX() && burningCell.GetY() == cell.GetY()))
             {
                 burningCells.Add(cell);
             }
 
         }
-        public List<Cell> CellsToBurn
-        {
-            get { return cellsToBurn; }
-        }
-        public List<Cell> CellsToDie
-        {
-            get { return cellsToDie; }
-        }
 
-        // Mutator
         public void RemoveFromBurningCells(Cell cell)
         {
             burningCells.Remove(cell);
         }
+
     }
 }

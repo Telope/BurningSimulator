@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BurningSimulator
 {
     // Program is the entry point of the program and contains the main menu
-    class Program
+    static class Program
     {
         // Program entry point and logic for main menu
         static void Main(string[] args)

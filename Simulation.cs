@@ -8,7 +8,7 @@ namespace BurningSimulator
 {
     //  Methods in the Simulation class carry out the actions related to running the simulation 
             //(from the RunSimulation() method in the Control Class)
-    class Simulation
+    static class Simulation
     {
         // The forest
         static private Grid grid;
@@ -31,8 +31,8 @@ namespace BurningSimulator
         {
             grid.Print();
             Console.WriteLine("The fire burned out!");
-            Console.WriteLine("The fire burned for " + grid.fireDuration + " ticks");
-            Console.WriteLine("At its peak, " + grid.biggestFire + " trees were alight simultaneously.");
+            Console.WriteLine("The fire burned for " + grid.GetFireDuration() + " ticks");
+            Console.WriteLine("At its peak, " + grid.GetBiggestFire() + " trees were alight simultaneously.");
             Console.WriteLine("There are " + grid.NumberOfIslands(grid) + " clumps of trees remaining\n");
 
             // Return to main menu

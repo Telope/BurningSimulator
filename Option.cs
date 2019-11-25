@@ -9,12 +9,12 @@ namespace BurningSimulator
     // Methods in the Option class carry out the actions listed in the options menu
         // (from the Control Class)
 
-    class Option
+    static class Option
     {
         // The forest
         static private Grid grid;
 
-        //Constructor
+        // Constructor
         static Option()
         {
             grid = Control.GetGrid();
@@ -26,10 +26,10 @@ namespace BurningSimulator
             string temp = string.Empty;
 
             // Return value is the current value if no change is made.
-            int newBurnTime = Cell.BurnTime;
+            int newBurnTime = Cell.GetBurnTime();
 
             Console.Clear();
-            Console.WriteLine("Currently, the fires takes " + Cell.BurnTime + " ticks to burn out");
+            Console.WriteLine("Currently, the fires takes " + Cell.GetBurnTime() + " ticks to burn out");
             Console.WriteLine("Input the new burn time >>");
 
             bool inputIsValid = false;
@@ -54,7 +54,7 @@ namespace BurningSimulator
             }
 
 
-            Cell.BurnTime = newBurnTime;
+            Cell.SetBurnTime(newBurnTime);
 
         }
 
@@ -64,10 +64,10 @@ namespace BurningSimulator
             string temp = string.Empty;
 
             // Updated burn chance is the same as the old one if no changes are made
-            int newBurnChance = Cell.BurnChance;
+            int newBurnChance = Cell.GetBurnChance();
 
             Console.Clear();
-            Console.WriteLine("Currently, cells have a  " + Cell.BurnChance + "% chance to burn >>");
+            Console.WriteLine("Currently, cells have a  " + Cell.GetBurnChance() + "% chance to burn >>");
             Console.WriteLine("Input the new percentage >>");
 
             bool inputIsValid = false;
@@ -92,13 +92,13 @@ namespace BurningSimulator
             }
 
 
-            Cell.BurnChance = newBurnChance;
+            Cell.SetBurnChance(newBurnChance);
 
         }
 
 
         // Change the dimensions of the grid (width and height)
-        internal static void GridSize()
+        public static void GridSize()
         {
             {
                 /*
@@ -109,8 +109,8 @@ namespace BurningSimulator
                 */
 
 
-                int newX = Grid.numColumns - 2;
-                int newY = Grid.numRows - 2;
+                int newX = Grid.GetNumColumns() - 2;
+                int newY = Grid.GetNumRows() - 2;
 
                 Console.Clear();
                 Console.WriteLine("Currently, the grid consists of " + newX + " columns and " + newY + " rows >>");
@@ -121,8 +121,8 @@ namespace BurningSimulator
                 Console.WriteLine("Input the new number of rows >>");
                 newY = ReadInput(newY);
 
-                Grid.numColumns = newX + 2;
-                Grid.numRows = newY + 2;
+                Grid.SetNumColumns(newX + 2);
+                Grid.SetNumRows(newY + 2);
 
             }
 

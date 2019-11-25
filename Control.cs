@@ -9,7 +9,7 @@ namespace BurningSimulator
     // Methods in the Control class carry out the actions listed in the main menu
         // (from the Program Class)
 
-    class Control
+    static class Control
     {
         // The forest
         private static Grid grid;
@@ -17,7 +17,7 @@ namespace BurningSimulator
         //Handles starting and repeating the simulation, returning  to main menu
         public static void RunSimulation()
         {
-            grid = new Grid(Grid.numColumns, Grid.numRows);
+            grid = new Grid(Grid.GetNumColumns(), Grid.GetNumRows());
 
             Simulation.Run();
 
@@ -61,7 +61,7 @@ namespace BurningSimulator
         }
 
         // Help screen: explanation / instructions / legend
-        internal static void DisplayHelp()
+        public static void DisplayHelp()
         {
             Console.Clear();
             Console.WriteLine("Help:\n\n" +
@@ -126,7 +126,7 @@ namespace BurningSimulator
         }
 
         // Display the Options menu
-        public static void DisplayOptions()
+        private static void DisplayOptions()
         {
             Console.Clear();
             Console.WriteLine("Options:\n");
